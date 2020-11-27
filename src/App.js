@@ -1,96 +1,64 @@
 import React, { Component } from "react";
+import SharedSteamGames from "./SharedSteamGames"
 import "bootstrap/dist/css/bootstrap.min.css"
 
 class App extends Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      items: [],
-      isLoaded: false,
-      items2: [],
-      isLoaded2: false,
-      combArray: [],
-      api1: "",
-      api2: ""
+    constructor(props) {
+        super(props);
+        this.state = {
+            userInput: false,
+            user1: "",
+            user2: ""
+        }
+        this.buttonClickHandle = this.buttonClickHandle.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
-  }
 
-  componentDidMount() {
-    const api = "http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=391C66AEE33C44E3C36C283651E05BEA&steamid=76561198040298609&include_appinfo=1&format=json"
-    const api2 = "http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=391C66AEE33C44E3C36C283651E05BEA&steamid=76561198165907050&include_appinfo=1&format=json"
-    const cors = "https://cors-anywhere.herokuapp.com/"
-
-    fetch(cors + api)
-      .then(res => res.json())
-      .then((json) => {
+    buttonClickHandle() {
         this.setState({
-          isLoaded: true,
-          items: json.response.games
+            userInput: true
         })
-      })
-    fetch(cors + api2)
-      .then(res => res.json())
-      .then((json) => {
+        this.render()
+    }
+
+    handleChange(event) {
         this.setState({
-          isLoaded2: true,
-          items2: json.response.games
-        })
-      })
-  }
-
-  createSteamImage(id, hash) {
-    return "http://media.steampowered.com/steamcommunity/public/images/apps/" + id + "/" + hash + ".jpg"
-  }
-
-  render() {
-    const { isLoaded, isLoaded2, items, items2 } = this.state;
-    if (!isLoaded && !isLoaded2) {
-      return <div>Loading...</div>
+            [event.target.name]: event.target.value
+        });
     }
-    else {
-      console.log(items)
-      console.log(items2)
-      let newCombArray = []
-      items.forEach((item) => {
-        items2.forEach((item2) => {
-          if (item2.appid === item.appid) {
-            item.playtime_forever = (item.playtime_forever + item2.playtime_forever) / 2
-            newCombArray.push(item)
-          }
-        })
-      })
-      newCombArray.sort(function (a, b) {
-        return b.playtime_forever - a.playtime_forever;
-      })
-      let maxHours = newCombArray[0]
-      console.log(newCombArray)
-      return (
-        <div class="container">
-          <div class="col text-center">
-            <h1>Shared steam games</h1>
-            <h4>By average playtime</h4>
-          </div>
-          <div class="col m-auto">
-            {newCombArray.map(item => (
-              <div class="row m-2" key={item.appid}>
-                <img src={this.createSteamImage(item.appid, item.img_logo_url)} class="img rounded h-50 center" alt="Logo"></img>
-                <div class="col">
-                  <h2>{item.name}</h2>
+
+    render() {
+        const { userInput, user1, user2 } = this.state;
+        if (userInput === false) {
+            return (
+                <div class="container text-center p-2">
+                    <div class="row">
+                        <div class="col p-1">
+                            <label class="p-3">User 1</label>
+                            <input required type="text" name="user1" value={user1} onChange={this.handleChange}></input>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col p-1">
+                            <label class="p-3">User 2</label>
+                            <input required type="text" name="user2" value={user2} onChange={this.handleChange}></input>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <button class="btn btn-primary" onClick={this.buttonClickHandle}>Enter</button>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-2">
-                  <span class="badge badge-info">{Math.round(item.playtime_forever / 60)} hrs</span>
-                  <div class="progress">
-                    <div class="progress-bar" style={{ width: ((item.playtime_forever / maxHours.playtime_forever) * 100) }}></div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )
+            )
+        }
+        if (userInput === true) {
+            return (
+                <SharedSteamGames api1={user1} api2={user2} />
+            )
+        }
     }
-  }
 }
 
 export default App;
