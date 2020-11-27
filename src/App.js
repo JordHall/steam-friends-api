@@ -69,10 +69,10 @@ class App extends Component {
             <h1>Shared steam games</h1>
             <h4>By average playtime</h4>
           </div>
-          <div class="col mx-auto">
+          <div class="col m-auto">
               {newCombArray.map(item => (
                 <div class="row m-2" key={item.appid}>
-                  <img src={this.createSteamImage(item.appid,item.img_logo_url)} class="img rounded h-50" alt="Logo"></img>
+                  <img src={this.createSteamImage(item.appid,item.img_logo_url)} class="img rounded h-50 center" alt="Logo"></img>
                   <div class="col">
                     <h2>{item.name}</h2>
                   </div>
