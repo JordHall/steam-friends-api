@@ -45,7 +45,7 @@ class SharedSteamGames extends Component {
   }
 
   createSteamImage(id, hash) {
-    return "http://media.steampowered.com/steamcommunity/public/images/apps/" + id + "/" + hash + ".jpg"
+    return "https://media.steampowered.com/steamcommunity/public/images/apps/" + id + "/" + hash + ".jpg"
   }
 
   render() {
