@@ -48,6 +48,10 @@ class SharedSteamGames extends Component {
     return "https://media.steampowered.com/steamcommunity/public/images/apps/" + id + "/" + hash + ".jpg"
   }
 
+  getProgWidth(min, max) {
+    return ((min / max) * 100).toString() + "%"
+  }
+
   render() {
     const { isLoaded, isLoaded2, items, items2 } = this.state;
     if (!isLoaded && !isLoaded2) {
@@ -60,22 +64,20 @@ class SharedSteamGames extends Component {
       items.forEach((item) => {
         items2.forEach((item2) => {
           if (item2.appid === item.appid) {
-            item.playtime_forever = (item.playtime_forever + item2.playtime_forever) / 2
+            item.avg = Math.round(((item.playtime_forever + item2.playtime_forever) / 2) / 60)
+            item.playtime1 = Math.round(item.playtime_forever/ 60)
+            item.playtime2 = Math.round(item2.playtime_forever / 60)
             newCombArray.push(item)
           }
         })
       })
       newCombArray.sort(function (a, b) {
-        return b.playtime_forever - a.playtime_forever;
+        return b.avg - a.avg;
       })
-      let maxHours = newCombArray[0]
       console.log(newCombArray)
+      let maxHours = newCombArray[0]
       return (
         <div class="container">
-          <div class="col text-center">
-            <h1>Shared steam games</h1>
-            <h4>By average playtime</h4>
-          </div>
           <div class="col m-auto">
             {newCombArray.map(item => (
               <div class="row m-2" key={item.appid}>
@@ -84,9 +86,11 @@ class SharedSteamGames extends Component {
                   <h2>{item.name}</h2>
                 </div>
                 <div class="col-2">
-                  <span class="badge badge-info">{Math.round(item.playtime_forever / 60)} hrs</span>
-                  <div class="progress">
-                    <div class="progress-bar" style={{ width: ((item.playtime_forever / maxHours.playtime_forever) * 100) }}></div>
+                  <span class="badge badge-primary">{item.playtime1} hrs</span>
+                  <span class="badge badge-danger"> {item.playtime2} hrs</span>
+                  <div class="progress position-relative">
+                    <div class="progress-bar bg-info" style={{ width: this.getProgWidth(item.playtime1,maxHours.avg) }}></div>
+                    <span class="justify-content-center d-flex position-absolute w-100 mt-2 font-weight-bold text-secondary">{item.avg}</span>
                   </div>
                 </div>
               </div>
