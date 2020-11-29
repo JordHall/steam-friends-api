@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.js": "/steam-friends-api/static/js/main.ed5eddaa.chunk.js",
-    "main.js.map": "/steam-friends-api/static/js/main.ed5eddaa.chunk.js.map",
+    "main.js": "/steam-friends-api/static/js/main.1c878839.chunk.js",
+    "main.js.map": "/steam-friends-api/static/js/main.1c878839.chunk.js.map",
     "runtime-main.js": "/steam-friends-api/static/js/runtime-main.d0205581.js",
     "runtime-main.js.map": "/steam-friends-api/static/js/runtime-main.d0205581.js.map",
     "static/css/2.1a02f21c.chunk.css": "/steam-friends-api/static/css/2.1a02f21c.chunk.css",
@@ -17,6 +17,6 @@
     "static/js/runtime-main.d0205581.js",
     "static/css/2.1a02f21c.chunk.css",
     "static/js/2.168580a5.chunk.js",
-    "static/js/main.ed5eddaa.chunk.js"
+    "static/js/main.1c878839.chunk.js"
   ]
 }
