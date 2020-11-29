@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import App from "./App"
 import "bootstrap/dist/css/bootstrap.min.css"
 
 class SharedSteamGames extends Component {
@@ -12,7 +13,9 @@ class SharedSteamGames extends Component {
       isLoaded2: false,
       combArray: [],
       api1: "",
-      api2: ""
+      api2: "",
+      hasError: false,
+      errorMsg: ""
     }
   }
 
@@ -30,6 +33,10 @@ class SharedSteamGames extends Component {
         });
       }).catch((error) => {
         console.log(error);
+        this.setState({
+          errorMsg: "Could not connect to API",
+          hasError: true
+        })
       });
 
     fetch(cors + api2Url)
@@ -41,6 +48,10 @@ class SharedSteamGames extends Component {
         });
       }).catch((error) => {
         console.log(error);
+        this.setState({
+          errorMsg: "Could not connect to API",
+          hasError: true
+        })
       });
   }
 
@@ -53,7 +64,10 @@ class SharedSteamGames extends Component {
   }
 
   render() {
-    const { isLoaded, isLoaded2, items, items2 } = this.state;
+    const { isLoaded, isLoaded2, items, items2, hasError, errorMsg } = this.state;
+    if (hasError) {
+      return <App errorMsg={errorMsg} />
+    }
     if (!isLoaded && !isLoaded2) {
       return <div class="text-center">Loading...</div>
     }
@@ -89,7 +103,7 @@ class SharedSteamGames extends Component {
                   <span class="badge badge-primary">{item.playtime1} hrs</span>
                   <span class="badge badge-danger"> {item.playtime2} hrs</span>
                   <div class="progress position-relative">
-                    <div class="progress-bar bg-info" style={{ width: this.getProgWidth(item.playtime1,maxHours.avg) }}></div>
+                    <div class="progress-bar bg-info" style={{ width: this.getProgWidth(item.avg,maxHours.avg) }}></div>
                     <span class="justify-content-center d-flex position-absolute w-100 mt-2 font-weight-bold text-secondary">{item.avg}</span>
                   </div>
                 </div>

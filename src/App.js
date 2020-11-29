@@ -9,7 +9,8 @@ class App extends Component {
         this.state = {
             userInput: false,
             user1: "",
-            user2: ""
+            user2: "",
+            errorMsg: ""
         }
         this.buttonClickHandle = this.buttonClickHandle.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -33,6 +34,7 @@ class App extends Component {
         if (userInput === false) {
             return (
                 <div class="container text-center p-2 mt-5 font-weight-bold">
+                    <div class="text-danger">{this.props.errorMsg}</div>
                     <div class="row">
                         <div class="col p-1">
                             <label class="p-3">User 1</label>
