@@ -32,7 +32,7 @@ class App extends Component {
         const { userInput, user1, user2 } = this.state;
         if (userInput === false) {
             return (
-                <div class="container text-center p-2">
+                <div class="container text-center p-2 mt-5 font-weight-bold">
                     <div class="row">
                         <div class="col p-1">
                             <label class="p-3">User 1</label>
@@ -46,8 +46,8 @@ class App extends Component {
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col">
-                            <button class="btn btn-primary" onClick={this.buttonClickHandle}>Enter</button>
+                        <div class="col p-3">
+                            <button class="btn btn-primary" onClick={this.buttonClickHandle}>Find</button>
                         </div>
                     </div>
                 </div>
