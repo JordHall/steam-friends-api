@@ -15,16 +15,46 @@ class SharedSteamGames extends Component {
       api1: "",
       api2: "",
       hasError: false,
-      errorMsg: ""
+      errorMsg: "",
+      username1: "",
+      username2: ""
+    }
+
+    this.handleAPIUrl = this.handleAPIUrl.bind(this);
+  }
+
+  handleAPIUrl(vanity, cors) {
+    this.getSteamUserID(vanity, cors)
+    const { username }  = this.state
+    console.log(username)
+    if (username.success === 1) {
+      return username.steamid
+    }
+    else {
+      return vanity
     }
   }
 
   componentDidMount() {
-    const api1Url = "http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=391C66AEE33C44E3C36C283651E05BEA&steamid=" + this.props.api1 + "&include_appinfo=1&format=json"
-    const api2Url = "http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=391C66AEE33C44E3C36C283651E05BEA&steamid=" + this.props.api2 + "&include_appinfo=1&format=json"
     const cors = "https://cors-anywhere.herokuapp.com/"
+    const apiUrl = "http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=391C66AEE33C44E3C36C283651E05BEA&steamid="
+    const vanityApiUrl = "https://api.steampowered.com/ISteamUser/ResolveVanityURL/v1/?key=391C66AEE33C44E3C36C283651E05BEA&vanityurl="
 
-    fetch(cors + api1Url)
+    fetch(cors + vanityApiUrl + this.props.api1, {credentials: "omit"})
+    .then(res => res.json()).then((json) => {
+      this.setState({
+        username1: json.response
+      })
+    })
+
+    fetch(cors + vanityApiUrl + this.props.api1, {credentials: "omit"})
+    .then(res => res.json()).then((json) => {
+      this.setState({
+        username2: json.response
+      })
+    })
+
+    fetch(cors + apiUrl + this.props.username1 + "&include_appinfo=1&format=json", {credentials: "omit"})
       .then(res => res.json())
       .then((json) => {
         this.setState({
@@ -39,7 +69,7 @@ class SharedSteamGames extends Component {
         })
       });
 
-    fetch(cors + api2Url)
+    fetch(cors + apiUrl + + this.props.username2 + "&include_appinfo=1&format=json", {credentials: "omit"})
       .then(res => res.json())
       .then((json) => {
         this.setState({
